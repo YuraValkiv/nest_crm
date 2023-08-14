@@ -1,51 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import {Model} from 'mongoose';
+import {Injectable} from '@nestjs/common';
+import {InjectModel} from '@nestjs/mongoose';
+import {User} from "./users.schema";
 import {CreateUserDto} from "./dto/create-user.dto";
-import {PrismaService} from "../prisma/prisma.service";
-import {User} from "@prisma/client";
 
 @Injectable()
 export class UsersService {
-    constructor(private readonly prisma: PrismaService) {}
-
-    async onModuleInit() {    await this.create('example@example.mail', 'pass')
+    constructor(@InjectModel(User.name) private userRepository: Model<User>) {
     }
-    async create(email: string, password: string): Promise<User> {
-        console.log(email)
-        console.log(password)
-        const user = await this.prisma.user.create({
-           data: {
-               email,
-               password
-           }
-        });
+
+    async createUser(dto: CreateUserDto) {
+        const user = new this.userRepository(dto).save();
         return user;
     }
 
-    async findAll(): Promise<User[]> {
-        return this.prisma.user.findMany();
+    async findAllUsers(): Promise<User[]> {
+        return await this.userRepository.find().exec();
+    }
+
+    async findByIdUser(id: string): Promise<User> {
+        return this.userRepository.findById(id);
+    }
+
+    async deleteUserById(id: string) {
+        const result = await this.userRepository.deleteOne({_id: id});
 
     }
 
-   /* async findOne(id: string): Promise<User | null> {
-        return this.prisma.user.findUnique({
-            where: { id: parseInt(id) },
-        });
+    async updateUser(id: string, dto: CreateUserDto): Promise<User> {
+        const updatedUser = await this.userRepository.findByIdAndUpdate(id, dto, {new: true});
+        return updatedUser;
     }
-
-    async update(id: string, dto: CreateUserDto): Promise<User> {
-        return this.prisma.user.update({
-            where: { id: parseInt(id) },
-            data: {
-                email: dto.email,
-                password: dto.password,
-            },
-        });
-    }
-
-    async remove(id: string): Promise<void> {
-        await this.prisma.user.delete({
-            where: { id: parseInt(id) },
-        });
-    }*/
-
 }
