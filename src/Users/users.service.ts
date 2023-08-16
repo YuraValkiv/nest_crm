@@ -31,4 +31,10 @@ export class UsersService {
         const updatedUser = await this.userRepository.findByIdAndUpdate(id, dto, {new: true});
         return updatedUser;
     }
+
+    async getUserByEmail(email: string) {
+        const user = await this.userRepository.findOne({email: email});
+        return user;
+    }
 }
+
