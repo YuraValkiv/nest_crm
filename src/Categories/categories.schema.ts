@@ -8,13 +8,10 @@ export type CategoryDocument = HydratedDocument<Category>;
 export class Category {
     @Prop()
     name: string;
-
     @Prop()
     imageSrc: string;
-
     @Prop()
     user: User;
-
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);

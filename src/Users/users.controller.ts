@@ -4,12 +4,12 @@ import {CreateUserDto} from "./dto/create-user.dto";
 import {JwtAuthGuard} from "../Auth/jwt-auth.guard";
 
 @Controller('users')
+@UseGuards(JwtAuthGuard)
 export class UsersController {
     constructor(private userService: UsersService) {
     }
 
     @HttpCode(200)
-    @UseGuards(JwtAuthGuard)
     @Get()
     userGetAll() {
         return this.userService.findAllUsers();
