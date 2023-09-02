@@ -1,4 +1,4 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import {HydratedDocument, Types} from 'mongoose';
 import {User} from "../Users/users.schema";
 
@@ -10,12 +10,13 @@ export class Order {
     date: Date;
     @Prop({})
     order: number;
-    @Prop({ type: [{ name: String, quantity: Number, cost: Number }]})
+    @Prop({type: [{name: String, quantity: Number, cost: Number}]})
     list: {
         name: string,
         quantity: number,
-        cost: number }[];
-    @Prop({ type: Types.ObjectId, ref: 'User' })
+        cost: number
+    }[];
+    @Prop({type: Types.ObjectId, ref: 'User'})
     user: User;
 }
 
