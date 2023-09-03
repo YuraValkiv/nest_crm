@@ -1,7 +1,6 @@
 import {Types} from "mongoose";
 
 export class CreateOrderDto {
-    readonly order: number;
     readonly list: {
         name: string;
         quantity: number;
